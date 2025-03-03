@@ -23,6 +23,32 @@
 // export type RootState = ReturnType<typeof store.getState>;
 
 // store.ts
+// import { configureStore } from "@reduxjs/toolkit";
+// import { persistStore, persistReducer } from "redux-persist";
+// import storage from "redux-persist/lib/storage";
+// import todoReducer from "@/redux/slices/todoSlice";
+
+// const persistConfig = {
+//   key: "root",
+//   storage,
+//   whitelist: ["todos"],
+//   serializable: false,
+// };
+
+// export type RootState = ReturnType<typeof store.getState>;
+
+// const persistedReducer = persistReducer(persistConfig, todoReducer);
+
+// export const store = configureStore({
+//   reducer: {
+//     todos: persistedReducer,
+    
+//   },
+// });
+
+// export const persistor = persistStore(store);
+
+// store.ts
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -31,19 +57,28 @@ import todoReducer from "@/redux/slices/todoSlice";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["todos"],
-  serializable: false,
 };
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof store.getState>
 
 const persistedReducer = persistReducer(persistConfig, todoReducer);
 
 export const store = configureStore({
   reducer: {
     todos: persistedReducer,
-    
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Ignore these action types
+        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+        // Ignore these field paths in all actions
+        ignoredActionPaths: ['meta.arg', 'payload.timestamp'],
+        // Ignore these paths in the state
+        ignoredPaths: ['persistedReducer'],
+      },
+    }),
 });
 
 export const persistor = persistStore(store);
+
