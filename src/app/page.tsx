@@ -2,5 +2,5 @@
 // import styles from "./page.module.css";
 
 export default function Home() {
-  return <div>Base Page on loading...</div>;
+  return <div>Base Page!!</div>;
 }

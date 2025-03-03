@@ -1,100 +1,117 @@
 "use client";
+
+import { useDispatch, useSelector } from "react-redux";
 import { Todo } from "@/typescript/todotypes";
+import { addTodo, toggleTodo, removeTodo } from "@/redux/slices/todoSlice";
+import { RootState } from "@/redux/store";
 import { useState } from "react";
-import { Button, TextField, Chip } from "@mui/material";
+import {
+  Button,
+  TextField,
+  Chip,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
+import { v4 as uuidv4 } from "uuid";
 
-const TodoItem = ({ title, task, tags }: Todo) => {
-  return (
-    <div
-      style={{
-        border: "1px solid #ddd",
-        padding: "10px",
-        marginBottom: "10px",
-      }}
-    >
-      <h3>{title}</h3>
-      <p>{task}</p>
-      <div>
-        {tags.map((tag, index) => (
-          <Chip key={index} label={tag} style={{ marginRight: "5px" }} />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const TodoPage = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+const TodoList = () => {
+  const dispatch = useDispatch();
+  const todos = useSelector((state: RootState) => state.todos.todos);
   const [newTitle, setNewTitle] = useState<string>("");
   const [newTask, setNewTask] = useState<string>("");
   const [newTags, setNewTags] = useState<string>("");
 
+  // const handleAddTodo = () => {
+  //   if (newTitle && newTask) {
+  //     const newTodo: Todo = {
+  //       id: uuidv4(),
+  //       title: newTitle,
+  //       task: newTask,
+  //       tags: tagsArray,
+  //       isCompleted: false,
+  //     };
+  //     dispatch(addTodo(newTodo));
+  //     setNewTitle("");
+  //     setNewTask("");
+  //     setNewTags("");
+  //   }
+  // };
+
   const handleAddTodo = () => {
     if (newTitle && newTask) {
-      const tagsArray = newTags
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter((tag) => tag);
-
       const newTodo: Todo = {
+        id: uuidv4(),  // Generate the UUID correctly here
         title: newTitle,
         task: newTask,
-        tags: tagsArray,
+        tags: newTags.split(",").map((tag) => tag.trim()),
+        isCompleted: false,
       };
-
-      setTodos([...todos, newTodo]);
-      setNewTitle("");
+      dispatch(addTodo(newTodo));  // Add the new todo to the Redux store
+      setNewTitle("");  // Reset inputs
       setNewTask("");
       setNewTags("");
     }
   };
+  
+  const handleToggleTodo = (id: string) => {
+    dispatch(toggleTodo(id));
+  };
+
+  const handleRemoveTodo = (id: string) => {
+    dispatch(removeTodo(id));
+  };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div>
       <h1>Todo App</h1>
 
-      <div style={{ marginBottom: "20px" }}>
-        <TextField
-          label="Title"
-          variant="outlined"
-          fullWidth
-          value={newTitle}
-          onChange={(e) => setNewTitle(e.target.value)}
-          style={{ marginBottom: "10px" }}
-        />
-        <TextField
-          label="Task"
-          variant="outlined"
-          fullWidth
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
-          style={{ marginBottom: "10px" }}
-        />
-        <TextField
-          label="Tags (comma separated)"
-          variant="outlined"
-          fullWidth
-          value={newTags}
-          onChange={(e) => setNewTags(e.target.value)}
-          style={{ marginBottom: "10px" }}
-        />
-        <Button variant="contained" color="primary" onClick={handleAddTodo}>
-          Add Todo
-        </Button>
-      </div>
+      <TextField
+        label="Title"
+        variant="outlined"
+        fullWidth
+        value={newTitle}
+        onChange={(e) => setNewTitle(e.target.value)}
+        style={{ marginBottom: "10px" }}
+      />
+      <TextField
+        label="Task"
+        variant="outlined"
+        fullWidth
+        value={newTask}
+        onChange={(e) => setNewTask(e.target.value)}
+        style={{ marginBottom: "10px" }}
+      />
+      <TextField
+        label="Tags (comma separated)"
+        variant="outlined"
+        fullWidth
+        value={newTags}
+        onChange={(e) => setNewTags(e.target.value)}
+        style={{ marginBottom: "10px" }}
+      />
+      <Button variant="contained" color="primary" onClick={handleAddTodo}>
+        Add Todo
+      </Button>
 
-      <div>
-        {todos.map((todo, index) => (
-          <TodoItem
-            key={index}
-            title={todo.title}
-            task={todo.task}
-            tags={todo.tags}
-          />
+      <List>
+        {todos.map((todo) => (
+          <ListItem key={todo.id}>
+            <ListItemText primary={todo.title} secondary={todo.task} />
+            <div>
+              {todo.tags.map((tag, index) => (
+                <Chip key={index} label={tag} style={{ marginRight: "5px" }} />
+              ))}
+            </div>
+            <Button onClick={() => handleToggleTodo(todo.id)}>
+              {todo.isCompleted ? "Uncomplete" : "Complete"}
+            </Button>
+            <Button onClick={() => handleRemoveTodo(todo.id)}>Delete</Button>
+          </ListItem>
         ))}
-      </div>
+      </List>
     </div>
   );
 };
 
-export default TodoPage;
+export default TodoList;
