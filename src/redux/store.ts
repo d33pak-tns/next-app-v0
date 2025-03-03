@@ -19,10 +19,8 @@
 //   },
 // });
 
-
 // export const persistor = persistStore(store);
 // export type RootState = ReturnType<typeof store.getState>;
-
 
 // store.ts
 import { configureStore } from "@reduxjs/toolkit";
@@ -33,6 +31,8 @@ import todoReducer from "@/redux/slices/todoSlice";
 const persistConfig = {
   key: "root",
   storage,
+  whitelist: ["todos"],
+  serializable: false,
 };
 
 export type RootState = ReturnType<typeof store.getState>;
@@ -42,6 +42,7 @@ const persistedReducer = persistReducer(persistConfig, todoReducer);
 export const store = configureStore({
   reducer: {
     todos: persistedReducer,
+    
   },
 });
 

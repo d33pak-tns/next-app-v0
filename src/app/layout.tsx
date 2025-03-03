@@ -32,28 +32,45 @@
 // }
 
 // layout.tsx
-import { Provider } from "react-redux";
-import { PersistGate } from 'redux-persist/integration/react';
-// import { PersistGate } from 'redux-persist/lib/integration/react';
-// import { PersistGate } from "redux-persist/es/integration/react";
-import { store, persistor } from "@/redux/store";
-import { CssBaseline } from "@mui/material";
+// import { Provider } from "react-redux";
+// import { PersistGate } from 'redux-persist/integration/react';
+// // import { PersistGate } from 'redux-persist/lib/integration/react';
+// // import { PersistGate } from "redux-persist/es/integration/react";
+// import { store, persistor } from "@/redux/store";
+// import { CssBaseline } from "@mui/material";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+// export default function RootLayout({
+//   children,
+// }: {
+//   children: React.ReactNode;
+// }) {
+//   return (
+//     <html lang="en">
+//       <body>
+//         <Provider store={store}>
+//           <PersistGate loading={null} persistor={persistor}>
+//             <CssBaseline />
+//             {children}
+//           </PersistGate>
+//         </Provider>
+//       </body>
+//     </html>
+//   );
+// }
+
+// src/app/layout.tsx
+
+import ClientWrapper from "@/components/ClientWrapper"; // Import the client-side wrapper
+
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
       <body>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <CssBaseline />
-            {children}
-          </PersistGate>
-        </Provider>
+        {/* Wrap children with the ClientWrapper */}
+        <ClientWrapper>{children}</ClientWrapper>
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;
