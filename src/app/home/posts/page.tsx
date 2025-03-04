@@ -1,10 +1,6 @@
-// app/home/posts/page.tsx
 import React from "react";
-import { Post } from "@/typescript/poststypes"; // Make sure you have the correct types
-
-// The component is now a Server Component by default in `app/` directory
+import { Post } from "@/typescript/poststypes";
 const PostsPage = async () => {
-  // Fetch data directly inside the server component
   const res = await fetch(
     "https://jsonplaceholder.typicode.com/posts?_limit=5"
   );

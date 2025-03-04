@@ -1,23 +1,18 @@
-// src/components/ClientWrapper.tsx
-
-'use client'; // Mark this as a client-side component
+'use client';
 
 import { useEffect, useState } from 'react';
 import { PersistGate } from 'redux-persist/integration/react';
-import { store, persistor } from '@/redux/store'; // Adjust the path to your store
+import { store, persistor } from '@/redux/store'; 
 import { Provider } from 'react-redux';
 import { CssBaseline } from '@mui/material';
 
 const ClientWrapper = ({ children }: { children: React.ReactNode }) => {
   const [isClient, setIsClient] = useState(false);
-
-  // This effect will only run on the client side to prevent SSR issues
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   if (!isClient) {
-    // Render the children without PersistGate during SSR
     return (
       <Provider store={store}>
         <CssBaseline />
@@ -26,7 +21,6 @@ const ClientWrapper = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  // Render PersistGate on the client-side only
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

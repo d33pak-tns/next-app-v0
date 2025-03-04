@@ -1,9 +1,8 @@
-// pages/app/home/blog/[id].tsx
 import { useRouter } from "next/router";
 
 const BlogPost = () => {
   const router = useRouter();
-  const { id } = router.query; // Access the dynamic `id` from the URL
+  const { id } = router.query;
 
   return (
     <div>

@@ -1,13 +1,9 @@
-// app/blog/page.tsx
-import Link from 'next/link';
-
-// Simulated list of posts (in a real app, this could come from an API)
+import Link from "next/link";
 const posts = [
-  { slug: 'my-first-post', title: 'My First Post' },
-  { slug: 'my-second-post', title: 'My Second Post' },
-  { slug: 'my-third-post', title: 'My Third Post' },
+  { slug: "my-first-post", title: "My First Post" },
+  { slug: "my-second-post", title: "My Second Post" },
+  { slug: "my-third-post", title: "My Third Post" },
 ];
-
 export default function BlogPage() {
   return (
     <div>
@@ -15,7 +11,6 @@ export default function BlogPage() {
       <ul>
         {posts.map((post) => (
           <li key={post.slug}>
-            {/* Each post links to its own dynamic page */}
             <Link href={`/blog/${post.slug}`}>{post.title}</Link>
           </li>
         ))}
@@ -24,13 +19,12 @@ export default function BlogPage() {
   );
 }
 
-// Here we use generateStaticParams to define the dynamic slugs at build time
 export async function generateStaticParams() {
   return [
-    { slug: 'my-first-post' },
-    { slug: 'my-second-post' },
-    { slug: 'my-third-post' },
+    { slug: "my-first-post" },
+    { slug: "my-second-post" },
+    { slug: "my-third-post" },
   ].map((post) => ({
-    slug: post.slug, // Each of these values will be used for the dynamic URL
+    slug: post.slug,
   }));
 }

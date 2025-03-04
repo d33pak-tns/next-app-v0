@@ -1,17 +1,13 @@
-// app/home/users/UserPage.tsx
-"use client"; // Mark as client-side component
+"use client";
 
 import { Button } from "@mui/material";
-import { useRouter } from "next/navigation"; // Use next/navigation instead of next/router
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const UserPage = () => {
-  const router = useRouter(); // Get the router object
-
-  // Function to handle button click and redirect
+  const router = useRouter();
   const handleRedirect = () => {
-    // Redirect to '/home' or '/' based on your requirement
-    router.push("/"); // Or router.push('/') for the root page
+    router.push("/");
   };
 
   return (
