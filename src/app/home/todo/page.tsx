@@ -88,7 +88,6 @@ const TodoList: React.FC = () => {
       </Button>
       <div>
         <h2>Pending Tasks</h2>
-
         <List>
           {todos.map((todo) => {
             if (!todo.isCompleted) {

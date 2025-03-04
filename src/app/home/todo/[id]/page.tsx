@@ -9,7 +9,6 @@ import { Params } from "next/dist/server/request/params";
 const TodoDetail = () => {
   const router = useRouter();
   const { id } = useParams<Params>();
-
   const todos = useSelector((state: RootState) => state.todos.todos);
   const todo = todos.find((todo) => todo.id === id);
 
